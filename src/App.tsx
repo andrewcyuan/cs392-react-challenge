@@ -22,14 +22,17 @@ interface ScheduleProps {
 
 const Schedule = (props: ScheduleProps) => {
   return (
-    <div>
-      {Object.entries(props.courses).map(([key, course]) => (
-        <div>
-          <h2>{key}</h2>
-          <p>{course.term}</p>
-          <p>{course.number}</p>
-          <p>{course.meets}</p>
-          <p>{course.title}</p>
+    <div className="flex flex-row gap-5 w-full">
+      {Object.entries(props.courses).map(([_key, course]) => (
+        <div className="border border-gray rounded-md shadow flex flex-col justify-between w-full min-h-[150px] p-2">
+          <div>
+            <h2>{course.term} CS {course.number}</h2>
+            <p>{course.title}</p>
+          </div>
+          <div>
+            <hr />
+            <p>{course.meets}</p>
+          </div>
         </div>
       ))}
     </div>
@@ -68,7 +71,7 @@ const App = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-[80vh] items-center justify-center">
+    <div className="flex flex-col gap-8 w-full min-h-[80vh] items-center justify-center px-5">
       <Banner title={schedule.title} />
       <Schedule courses={schedule.courses} />
     </div>

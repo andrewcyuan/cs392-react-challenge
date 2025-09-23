@@ -1,3 +1,4 @@
+import { useJsonQuery } from "./utils/fetchJSON"
 
 interface BannerProps {
   title: string
@@ -5,7 +6,7 @@ interface BannerProps {
 
 const Banner = (props: BannerProps) => {
   return (
-    <h1>{props.title}</h1>
+    <h1 className="mt-5">{props.title}</h1>
   )
 }
 
@@ -39,41 +40,28 @@ const Schedule = (props: ScheduleProps) => {
   )
 }
 
+type Schedule = {
+  title: string;
+  courses: Record<string, Course>;
+}
+
 const App = () => {
-  const schedule = {
-    "title": "CS Courses for 2018-2019",
-    "courses": {
-      "F101": {
-        "term": "Fall",
-        "number": "101",
-        "meets": "MWF 11:00-11:50",
-        "title": "Computer Science: Concepts, Philosophy, and Connections"
-      },
-      "F110": {
-        "term": "Fall",
-        "number": "110",
-        "meets": "MWF 10:00-10:50",
-        "title": "Intro Programming for non-majors"
-      },
-      "S313": {
-        "term": "Spring",
-        "number": "313",
-        "meets": "TuTh 15:30-16:50",
-        "title": "Tangible Interaction Design and Learning"
-      },
-      "S314": {
-        "term": "Spring",
-        "number": "314",
-        "meets": "TuTh 9:30-10:50",
-        "title": "Tech & Human Interaction"
-      }
-    }
-  };
+
+  const [schedule, loading, err] = useJsonQuery<Schedule>('https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php');
+
+  if (err) {
+    console.error("Error in fetch: ", err)
+  }
 
   return (
-    <div className="flex flex-col gap-8 w-full min-h-[80vh] items-center justify-center px-5">
-      <Banner title={schedule.title} />
-      <Schedule courses={schedule.courses} />
+    <div className="w-full min-h-[80vh] items-center justify-center px-5">
+      {loading ?
+        <h1>Data loading...</h1> :
+        <div className="flex flex-col gap-8">
+          <Banner title={schedule.title} />
+          <Schedule courses={schedule.courses} />
+        </div>
+      }
     </div>
   )
 }

@@ -1,44 +1,7 @@
 import { useJsonQuery } from "./utils/fetchJSON"
-
-interface BannerProps {
-  title: string
-}
-
-const Banner = (props: BannerProps) => {
-  return (
-    <h1 className="mt-5">{props.title}</h1>
-  )
-}
-
-interface Course {
-  term: string;
-  number: string;
-  meets: string;
-  title: string;
-}
-
-interface ScheduleProps {
-  courses: Record<string, Course>
-}
-
-const Schedule = (props: ScheduleProps) => {
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full overflow-auto">
-      {Object.entries(props.courses).map(([_key, course]) => (
-        <div className="border border-gray rounded-md shadow flex flex-col justify-between w-full min-h-[150px] p-2">
-          <div>
-            <h2>{course.term} CS {course.number}</h2>
-            <p>{course.title}</p>
-          </div>
-          <div>
-            <hr />
-            <p>{course.meets}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
+import { Schedule } from "./components/Schedule"
+import type { Course } from "./components/Schedule"
+import { Banner } from "./components/Banner"
 
 type Schedule = {
   title: string;

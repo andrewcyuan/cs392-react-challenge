@@ -1,6 +1,6 @@
 import { useJsonQuery } from "./utils/fetchJSON"
-import { Schedule } from "./components/Schedule"
-import type { Course } from "./components/Schedule"
+import TermPage from "./components/TermPage"
+import type { Course } from "./components/TermPage/CourseList"
 import { Banner } from "./components/Banner"
 
 type Schedule = {
@@ -22,7 +22,7 @@ const App = () => {
         <h1>Data loading...</h1> :
         <div className="flex flex-col gap-8">
           <Banner title={schedule.title} />
-          <Schedule courses={schedule.courses} />
+          <TermPage courses={schedule.courses} />
         </div>
       }
     </div>

@@ -5,14 +5,14 @@ export interface Course {
     title: string;
 }
 
-export interface ScheduleProps {
-    courses: Record<string, Course>
+export interface CourseListProps {
+    courses: Course[]
 }
 
-export const Schedule = (props: ScheduleProps) => {
+export const CourseList = (props: CourseListProps) => {
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full overflow-auto">
-            {Object.entries(props.courses).map(([_key, course]) => (
+            {props.courses.map(course => (
                 <div className="border border-gray rounded-md shadow flex flex-col justify-between w-full min-h-[150px] p-2">
                     <div>
                         <h2>{course.term} CS {course.number}</h2>

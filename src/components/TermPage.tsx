@@ -8,27 +8,20 @@ interface TermPageProps {
     courses: Record<string, Course>;
 }
 
-function filterCourses(newTerm: string, courses: Course[]) {
-    return courses.filter(course => course.term === newTerm);
-}
-
 export default function TermPage(props: TermPageProps) {
 
-    const courseList: Course[] = Object.values(props.courses)
-
-    const [courses, setCourses] = useState(filterCourses("Fall", courseList));
+    const [selected, setSelected] = useState("Fall");
 
     const termSelectorOptions = ["Fall", "Winter", "Spring"];
 
 
-    const changeTerm = (newTerm: string) => {
-        setCourses(filterCourses(newTerm, courseList))
-    }
-
     return (
-        <div className="flex flex-col gap-5">
-            <TermSelector options={termSelectorOptions} defaultSelected={"Fall"} setSelected={changeTerm} />
-            <CourseList courses={courses} />
+        <div className="flex flex-col">
+            <div className="mb-5">
+                <h2>Select Term</h2>
+                <TermSelector options={termSelectorOptions} selected={selected} setSelected={setSelected} />
+            </div>
+            <CourseList selectedTerm={selected} courses={props.courses} />
         </div>
     );
 }

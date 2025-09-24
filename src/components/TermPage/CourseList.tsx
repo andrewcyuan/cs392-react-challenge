@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { type Dispatch, type SetStateAction } from "react"
 
 export interface Course {
     term: string;
@@ -9,24 +9,24 @@ export interface Course {
 
 export interface CourseListProps {
     courses: Record<string, Course>;
+    currentlySelectedCourses: string[];
+    setCurrentlySelectedCourses: Dispatch<SetStateAction<string[]>>;
     selectedTerm: string;
 }
 
-export const CourseList = (props: CourseListProps) => {
-
-    const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySelectedCourses, selectedTerm}: CourseListProps) => {
 
     const toggleSelectedItem = (key: string) => {
-        setSelectedCourses(selectedCourses.includes(key) ? selectedCourses.filter(x => x !== key) : [...selectedCourses, key])
+        setCurrentlySelectedCourses(currentlySelectedCourses.includes(key) ? currentlySelectedCourses.filter(x => x !== key) : [...currentlySelectedCourses, key])
     }
 
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full overflow-auto">
-            {Object.entries(props.courses).filter(([_key, course]) => course.term === props.selectedTerm).map(([key, course]) => (
+            {Object.entries(courses).filter(([_key, course]) => course.term === selectedTerm).map(([key, course]) => (
                 <button
                     key={key}
                     className={`border border-gray rounded-md shadow w-full min-h-[150px] p-2 hover:cursor-pointer ${
-                        selectedCourses.includes(key) ? "bg-green-300 hover:bg-green-400" : "hover:bg-gray-100"
+                        currentlySelectedCourses.includes(key) ? "bg-green-300 hover:bg-green-400" : "hover:bg-gray-100"
                     }`}
                     onClick={() => toggleSelectedItem(key)}
                 >

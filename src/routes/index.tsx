@@ -1,7 +1,9 @@
-import { useJsonQuery } from "./utils/fetchJSON"
-import TermPage from "./components/TermPage"
-import type { Course } from "./components/TermPage/CourseList"
-import { Banner } from "./components/Banner"
+import { createFileRoute } from '@tanstack/react-router'
+
+import { useJsonQuery } from "../utils/fetchJSON"
+import TermPage from "../components/TermPage"
+import type { Course } from "../components/TermPage/CourseList"
+import { Banner } from "../components/Banner"
 
 type Schedule = {
   title: string;
@@ -29,4 +31,6 @@ const App = () => {
   )
 }
 
-export default App
+export const Route = createFileRoute('/')({
+    component: App
+})

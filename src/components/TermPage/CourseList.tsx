@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction } from "react"
 import { isOverlapping } from "../../utils/calcTimeOverlap";
+import SquarePen from "./SquarePenSVG";
 
 export interface Course {
     term: string;
@@ -15,7 +16,7 @@ export interface CourseListProps {
     selectedTerm: string;
 }
 
-export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySelectedCourses, selectedTerm}: CourseListProps) => {
+export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySelectedCourses, selectedTerm }: CourseListProps) => {
 
     const toggleSelectedItem = (key: string) => {
         setCurrentlySelectedCourses(currentlySelectedCourses.includes(key) ? currentlySelectedCourses.filter(x => x !== key) : [...currentlySelectedCourses, key])
@@ -45,7 +46,7 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
                     className={`border border-gray rounded-md shadow w-full min-h-[150px] p-2 ${calcFormatting(key)}`}
                     onClick={() => toggleSelectedItem(key)}
                 >
-                    <div className="flex flex-col justify-between w-full h-full">
+                    <div className="flex flex-col justify-between w-full h-full text-left">
 
                         <div>
                             <h2>{course.term} CS {course.number}</h2>
@@ -53,7 +54,9 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
                         </div>
                         <div>
                             <hr />
-                            <p>{course.meets}</p>
+                            <div className="flex flex-col md:flex-row md:justify-between">
+                                <p>{course.meets}</p>
+                            </div>
                         </div>
                     </div>
                 </button>

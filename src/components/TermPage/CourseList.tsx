@@ -1,3 +1,5 @@
+import { useNavigate } from "@tanstack/react-router"
+
 import { type Dispatch, type SetStateAction } from "react"
 import { isOverlapping } from "../../utils/calcTimeOverlap";
 import SquarePen from "./SquarePenSVG";
@@ -17,7 +19,9 @@ export interface CourseListProps {
 }
 
 export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySelectedCourses, selectedTerm }: CourseListProps) => {
-
+    
+    const navigate = useNavigate();
+    
     const toggleSelectedItem = (key: string) => {
         setCurrentlySelectedCourses(currentlySelectedCourses.includes(key) ? currentlySelectedCourses.filter(x => x !== key) : [...currentlySelectedCourses, key])
     }
@@ -38,28 +42,55 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
         }
     }
 
+    const edgeButtonClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, key: string, course: Course) => {
+        e.stopPropagation();
+        console.log("Navigating to course " + key);
+
+
+        await navigate({
+            to: `/course-form/$course-id`,
+            params: {
+                "course-id": key
+            },
+            search: {
+                course: course
+            }
+        })
+    }
+
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full overflow-auto">
             {Object.entries(courses).filter(([_key, course]) => course.term === selectedTerm).map(([key, course]) => (
-                <button
+                <div
                     key={key}
-                    className={`border border-gray rounded-md shadow w-full min-h-[150px] p-2 ${calcFormatting(key)}`}
+                    role="button"
+                    className={`group relative border border-gray rounded-md shadow w-auto min-h-[150px] p-2 ${calcFormatting(key)}`}
                     onClick={() => toggleSelectedItem(key)}
                 >
+                    {/** Edge button */}
+                    <div className="pointer-events-none absolute top-2 right-2 flex 
+                    opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                            type="button"
+                            aria-label="Button"
+                            className="pointer-events-auto border-2 border-black p-1 hover:bg-amber-400 rounded-full shadow"
+                            onClick={(e) => edgeButtonClick(e, key, course)}
+                        >
+                            <SquarePen />
+                        </button>
+                    </div>
+                    {/** card content */}
                     <div className="flex flex-col justify-between w-full h-full text-left">
-
                         <div>
                             <h2>{course.term} CS {course.number}</h2>
                             <p>{course.title}</p>
                         </div>
-                        <div>
+                        <div className="flex flex-col gap-1">
                             <hr />
-                            <div className="flex flex-col md:flex-row md:justify-between">
-                                <p>{course.meets}</p>
-                            </div>
+                            <p>{course.meets}</p>
                         </div>
                     </div>
-                </button>
+                </div>
             ))}
         </div>
     )

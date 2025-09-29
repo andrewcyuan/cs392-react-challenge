@@ -19,9 +19,9 @@ export interface CourseListProps {
 }
 
 export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySelectedCourses, selectedTerm }: CourseListProps) => {
-    
+
     const navigate = useNavigate();
-    
+
     const toggleSelectedItem = (key: string) => {
         setCurrentlySelectedCourses(currentlySelectedCourses.includes(key) ? currentlySelectedCourses.filter(x => x !== key) : [...currentlySelectedCourses, key])
     }
@@ -46,14 +46,16 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
         e.stopPropagation();
         console.log("Navigating to course " + key);
 
-
         await navigate({
             to: `/course-form/$course-id`,
             params: {
                 "course-id": key
             },
             search: {
-                course: course
+                term: course.term as "Fall" | "Winter" | "Spring" | "Summer",
+                number: course.number,
+                meets: course.meets,
+                title: course.title
             }
         })
     }

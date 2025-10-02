@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { useJsonQuery } from "../utils/fetchJSON"
+import { useDataQuery } from '../utils/firebase'
 import TermPage from "../components/TermPage"
 import type { Course } from "../components/TermPage/CourseList"
 import { Banner } from "../components/Banner"
@@ -12,8 +12,7 @@ type Schedule = {
 
 const App = () => {
 
-  const [schedule, loading, err] = useJsonQuery<Schedule>('https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php');
-
+  const [schedule, loading, err] = useDataQuery<Schedule>('/');
   if (err) {
     console.error("Error in fetch: ", err)
   }
@@ -26,11 +25,12 @@ const App = () => {
           <Banner title={schedule.title} />
           <TermPage courses={schedule.courses} />
         </div>
+
       }
     </div>
   )
 }
 
 export const Route = createFileRoute('/')({
-    component: App
+  component: App
 })

@@ -5,7 +5,7 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { CourseSchema, CourseSchemaResolver } from '../../../components/CourseForm/formValidators';
 import type { CourseSchemaType } from '../../../components/CourseForm/formValidators';
 
-import { TermField } from '../../../components/CourseForm/Fields';
+import { TermField, NumberField, MeetsField, TitleField } from '../../../components/CourseForm/Fields';
 
 
 
@@ -43,8 +43,6 @@ function RouteComponent() {
         })
     }
 
-    const capitalizeFirstLetter = (str: string) => str[0].toUpperCase() + str.substring(1)
-
     return (
         <div className="w-full min-h-[70vh] flex flex-col items-center">
             <div className="mt-10">
@@ -53,6 +51,9 @@ function RouteComponent() {
                     <form onSubmit={methods.handleSubmit(submitForm)} className="flex flex-col gap-2">
 
                         <TermField />
+                        <NumberField />
+                        <MeetsField />
+                        <TitleField />
 
                         {/** Submit and cancel buttons */}
                         <div className="flex flex-row gap-2 mt-2">

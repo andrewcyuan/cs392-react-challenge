@@ -40,6 +40,8 @@ function RouteComponent() {
 
     const [valid, setValid] = useState(false);
 
+    const [fbError, setFbError] = useState("");
+
     useEffect(() => {
         const sub = methods.watch(async () => {
             const ok = await methods.trigger(['term', 'number', 'meets', 'title']);
@@ -49,17 +51,22 @@ function RouteComponent() {
     }, [methods]);
 
     const submitForm = async (data: CourseSchemaType) => {
-        console.log(data);
-        await update(ref(db, `courses/${courseId}`), {
-            term: data.term,
-            number: data.number,
-            meets: data.meets,
-            title: data.title
-        });
+        console.log("Attempting submit")
 
-        navigate({
-            to: '/'
-        })
+        try {
+            await update(ref(db, `courses/${courseId}`), {
+                term: data.term,
+                number: data.number,
+                meets: data.meets,
+                title: data.title
+            });
+            navigate({
+                to: '/'
+            })
+        } catch {
+            setFbError("You must be signed in to edit courses!")
+        }
+
     }
 
     const cancel = () => {
@@ -97,6 +104,7 @@ function RouteComponent() {
                                 Submit
                             </button>
                         </div>
+                        <p className="text-red-500">{fbError}</p>
                     </form>
                 </FormProvider>
             </div>

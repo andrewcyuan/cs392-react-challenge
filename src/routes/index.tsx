@@ -21,7 +21,7 @@ const App = () => {
     <div className="w-full min-h-[80vh] items-center justify-center px-5">
       {loading ?
         <h1>Data loading...</h1> :
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4">
           <Banner title={schedule.title} />
           <TermPage courses={schedule.courses} />
         </div>

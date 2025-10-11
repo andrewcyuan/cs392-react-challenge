@@ -9,7 +9,7 @@ interface TermSelectorProps {
 export const TermSelector = (props: TermSelectorProps) => {
 
     return (
-        <div>
+        <div className="flex flex-row gap-5">
             {props.options.map((option) => (
                 <div key={option} className="flex flex-row gap-1">
                     <input

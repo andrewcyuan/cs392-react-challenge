@@ -22,7 +22,7 @@ export default function TermPage(props: TermPageProps) {
 
     return (
         <div className="flex flex-col">
-            <div className="flex flex-row gap-8 w-full mb-5">
+            <div className="flex flex-row justify-between w-full mb-5">
 
                 <div className="">
                     <h2>Select Term</h2>

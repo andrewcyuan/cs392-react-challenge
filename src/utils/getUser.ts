@@ -18,8 +18,8 @@ export function useAuth() {
     return { user, loading };
 }
 
-export const useIsAdmin = () => {
+export const useIsAdmin = (): boolean => {
     const { user } = useAuth();
-    const [isAdmin, isLoading, error] = useDataQuery(`/admins/${user?.uid}`);
-    return isAdmin;
+    const [isAdmin, _isLoading, _error] = useDataQuery(`/admins/${user?.uid}`);
+    return isAdmin as boolean;
 };

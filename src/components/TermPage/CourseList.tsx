@@ -71,7 +71,7 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
                     className={`group relative border border-gray rounded-md shadow w-auto min-h-[150px] p-2 ${calcFormatting(key)}`}
                     onClick={() => toggleSelectedItem(key)}
                 >
-                    {/**Edge Button */}
+
                     {isAdmin &&
                         < div className="pointer-events-none absolute top-2 right-2 flex 
                     opacity-0 group-hover:opacity-100 transition-opacity">

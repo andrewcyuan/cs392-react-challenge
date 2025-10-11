@@ -7,6 +7,10 @@ import type { CourseSchemaType } from '../../../components/CourseForm/formValida
 
 import { TermField, NumberField, MeetsField, TitleField } from '../../../components/CourseForm/Fields';
 
+import { getDatabase, ref, update } from 'firebase/database';
+
+import { useState, useEffect } from 'react';
+
 
 
 export const Route = createFileRoute('/course-form/$course-id/')({
@@ -15,7 +19,6 @@ export const Route = createFileRoute('/course-form/$course-id/')({
 })
 
 function RouteComponent() {
-
     const navigate = useNavigate();
 
     const { "course-id": courseId } = useParams({ from: '/course-form/$course-id/' })
@@ -33,8 +36,30 @@ function RouteComponent() {
         reValidateMode: "onChange"
     })
 
-    const submitForm = (data: CourseSchemaType) => {
+    const db = getDatabase();
+
+    const [valid, setValid] = useState(false);
+
+    useEffect(() => {
+        const sub = methods.watch(async () => {
+            const ok = await methods.trigger(['term', 'number', 'meets', 'title']);
+            setValid(ok);
+        });
+        return () => sub.unsubscribe();
+    }, [methods]);
+
+    const submitForm = async (data: CourseSchemaType) => {
         console.log(data);
+        await update(ref(db, `courses/${courseId}`), {
+            term: data.term,
+            number: data.number,
+            meets: data.meets,
+            title: data.title
+        });
+
+        navigate({
+            to: '/'
+        })
     }
 
     const cancel = () => {
@@ -65,8 +90,9 @@ function RouteComponent() {
                                 Cancel
                             </button>
                             <button
-                                className="px-2 py-1 bg-blue-400 hover:bg-blue-500 rounded-lg border border-black hover:cursor-pointer"
+                                className={`px-2 py-1 rounded-lg border border-black hover:cursor-pointer ${!valid ? 'bg-gray-400' : 'bg-blue-400 hover:bg-blue-500'}`}
                                 type="submit"
+                                disabled={!valid}
                             >
                                 Submit
                             </button>

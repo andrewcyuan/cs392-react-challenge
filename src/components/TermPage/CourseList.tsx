@@ -1,8 +1,8 @@
 import { useNavigate } from "@tanstack/react-router"
-import { useAuth } from "../../utils/getUser";
 import { type Dispatch, type SetStateAction } from "react"
 import { isOverlapping } from "../../utils/calcTimeOverlap";
 import SquarePen from "./SquarePenSVG";
+import { useIsAdmin } from "../../utils/getUser";
 
 export interface Course {
     term: string;
@@ -26,7 +26,7 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
         setCurrentlySelectedCourses(currentlySelectedCourses.includes(key) ? currentlySelectedCourses.filter(x => x !== key) : [...currentlySelectedCourses, key])
     }
 
-    const { user } = useAuth();
+    const isAdmin = useIsAdmin();
 
     // utility function that calculates formatting based on:
     // 1. if the course is selected
@@ -72,7 +72,7 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
                     onClick={() => toggleSelectedItem(key)}
                 >
                     {/**Edge Button */}
-                    {user &&
+                    {isAdmin &&
                         < div className="pointer-events-none absolute top-2 right-2 flex 
                     opacity-0 group-hover:opacity-100 transition-opacity">
                             <button

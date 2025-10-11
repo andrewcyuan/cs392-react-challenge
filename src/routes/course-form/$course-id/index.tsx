@@ -64,7 +64,7 @@ function RouteComponent() {
                 to: '/'
             })
         } catch {
-            setFbError("You must be signed in to edit courses!")
+            setFbError("You must be signed in as an admin to edit courses!")
         }
 
     }

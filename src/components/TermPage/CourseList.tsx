@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router"
-
+import { useAuth } from "../../utils/getUser";
 import { type Dispatch, type SetStateAction } from "react"
 import { isOverlapping } from "../../utils/calcTimeOverlap";
 import SquarePen from "./SquarePenSVG";
@@ -25,6 +25,8 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
     const toggleSelectedItem = (key: string) => {
         setCurrentlySelectedCourses(currentlySelectedCourses.includes(key) ? currentlySelectedCourses.filter(x => x !== key) : [...currentlySelectedCourses, key])
     }
+
+    const { user } = useAuth();
 
     // utility function that calculates formatting based on:
     // 1. if the course is selected
@@ -69,18 +71,20 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
                     className={`group relative border border-gray rounded-md shadow w-auto min-h-[150px] p-2 ${calcFormatting(key)}`}
                     onClick={() => toggleSelectedItem(key)}
                 >
-                    {/** Edge button */}
-                    <div className="pointer-events-none absolute top-2 right-2 flex 
+                    {/**Edge Button */}
+                    {user &&
+                        < div className="pointer-events-none absolute top-2 right-2 flex 
                     opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                            type="button"
-                            aria-label="Button"
-                            className="pointer-events-auto border-2 border-black p-1 hover:bg-amber-400 rounded-full shadow"
-                            onClick={(e) => edgeButtonClick(e, key, course)}
-                        >
-                            <SquarePen />
-                        </button>
-                    </div>
+                            <button
+                                type="button"
+                                aria-label="Button"
+                                className="pointer-events-auto border-2 border-black p-1 hover:bg-amber-400 rounded-full shadow"
+                                onClick={(e) => edgeButtonClick(e, key, course)}
+                            >
+                                <SquarePen />
+                            </button>
+                        </div>
+                    }
                     {/** card content */}
                     <div className="flex flex-col justify-between w-full h-full text-left">
                         <div>
@@ -93,7 +97,8 @@ export const CourseList = ({ courses, currentlySelectedCourses, setCurrentlySele
                         </div>
                     </div>
                 </div>
-            ))}
-        </div>
+            ))
+            }
+        </div >
     )
 }
